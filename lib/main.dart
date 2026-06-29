@@ -5,11 +5,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app/routes/app_pages.dart';
 import 'core/const/app_theme.dart';
 import 'core/localization/app_translations.dart';
+import 'core/service/storage/hive_service.dart';
 import 'core/service/language_service.dart';
 import 'core/service/theme_change/theme_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Hive
+  final hiveService = Get.put(HiveService());
+  await hiveService.init();
 
   // Initialize SharedPreferences and LanguageService
   await Get.putAsync(() => SharedPreferences.getInstance());

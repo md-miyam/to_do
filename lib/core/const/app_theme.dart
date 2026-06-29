@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import 'app_colors.dart';
 
 class AppTheme {
@@ -9,126 +7,108 @@ class AppTheme {
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
-
-    colorScheme: const ColorScheme.light(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: AppColors.primary,
       primary: AppColors.primary,
       secondary: AppColors.secondary,
       surface: AppColors.lightSurface,
       error: AppColors.error,
+      brightness: Brightness.light,
     ),
-
     scaffoldBackgroundColor: AppColors.lightBackground,
+    
+    // Modern Bottom Sheet with rounded corners globally
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: AppColors.lightSurface,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
+    ),
 
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.lightBackground,
       foregroundColor: AppColors.lightText,
       elevation: 0,
-      centerTitle: false,
     ),
-
-    cardTheme: const CardThemeData(
+    cardTheme: CardThemeData(
       color: AppColors.lightSurface,
       elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
-
     dividerTheme: const DividerThemeData(
       color: AppColors.lightDivider,
-      thickness: .8,
+      thickness: 1,
     ),
-
     iconTheme: const IconThemeData(
       color: AppColors.lightText,
     ),
-
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppColors.lightInput,
-      hintStyle: GoogleFonts.spaceGrotesk(
+      hintStyle: const TextStyle(
         color: AppColors.lightSubText,
+        fontSize: 14,
       ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
         borderSide: const BorderSide(color: AppColors.lightBorder),
       ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(
-          color: AppColors.primary,
-          width: 1.5,
-        ),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.error),
-      ),
-    ),
-
-    textTheme: GoogleFonts.spaceGroteskTextTheme().apply(
-      bodyColor: AppColors.lightText,
-      displayColor: AppColors.lightText,
     ),
   );
 
   static final ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
-
-    colorScheme: const ColorScheme.dark(
-      primary: AppColors.primary,
-      secondary: AppColors.darkText,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: AppColors.primaryDark,
+      primary: AppColors.primaryDark,
+      secondary: AppColors.secondaryDark,
       surface: AppColors.darkSurface,
-      error: AppColors.error,
+      error: AppColors.errorDark,
+      brightness: Brightness.dark,
     ),
-
     scaffoldBackgroundColor: AppColors.darkBackground,
+
+    // Modern Bottom Sheet with rounded corners globally
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: AppColors.darkSurface,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
+    ),
 
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.darkBackground,
       foregroundColor: AppColors.darkText,
       elevation: 0,
-      centerTitle: false,
     ),
-
-    cardTheme: const CardThemeData(
+    cardTheme: CardThemeData(
       color: AppColors.darkSurface,
       elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
-
     dividerTheme: const DividerThemeData(
       color: AppColors.darkDivider,
-      thickness: .8,
+      thickness: 1,
     ),
-
     iconTheme: const IconThemeData(
       color: AppColors.darkText,
     ),
-
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppColors.darkInput,
-      hintStyle: GoogleFonts.spaceGrotesk(
+      hintStyle: const TextStyle(
         color: AppColors.darkSubText,
+        fontSize: 14,
       ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
         borderSide: const BorderSide(color: AppColors.darkBorder),
       ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(
-          color: AppColors.primary,
-          width: 1.5,
-        ),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.error),
-      ),
-    ),
-
-    textTheme: GoogleFonts.spaceGroteskTextTheme().apply(
-      bodyColor: AppColors.darkText,
-      displayColor: AppColors.darkText,
     ),
   );
 }

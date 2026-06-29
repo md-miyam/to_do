@@ -163,7 +163,7 @@ class _GlobalTextFieldState extends State<GlobalTextField> {
           obscureText: _obscureText,
           maxLines: widget.isHidden ? 1 : widget.maxLines,
           inputFormatters: _inputFormatters,
-          cursorColor: AppColors.primary,
+          cursorColor: widget.activeColor ?? AppColors.primary,
           style: GoogleFonts.spaceGrotesk(
             fontSize: 16.sp,
             fontWeight: FontWeight.w400,

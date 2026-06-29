@@ -15,11 +15,13 @@ class GlobalAppButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? disabledColor;
   final Color textColor;
+  final Color? disabledTextColor;
   final Color? borderColor;
 
   final double borderRadius;
   final double? width;
   final double? height;
+  final double? fontSize;
 
   final Widget? icon;
   final double iconSpacing;
@@ -37,10 +39,12 @@ class GlobalAppButton extends StatelessWidget {
     this.backgroundColor,
     this.disabledColor,
     this.textColor = Colors.white,
+    this.disabledTextColor,
     this.borderColor,
     this.borderRadius = 100,
     this.width = double.infinity,
     this.height,
+    this.fontSize,
     this.icon,
     this.iconSpacing = 6,
     this.imagePath,
@@ -59,14 +63,20 @@ class GlobalAppButton extends StatelessWidget {
     return disabledColor ?? AppColors.input(context);
   }
 
-  Color _resolvedTextColor(BuildContext context) {
+  Color _resolvedTextColor(BuildContext context, bool active) {
+    if (!active) {
+      return disabledTextColor ?? AppColors.subText(context);
+    }
     if (borderColor != null) {
       return AppColors.text(context);
     }
     return textColor;
   }
 
-  Color _resolvedBorderColor(BuildContext context) {
+  Color _resolvedBorderColor(BuildContext context, bool active) {
+    if (!active) {
+      return borderColor != null ? AppColors.border(context).withAlpha(100) : Colors.transparent;
+    }
     return borderColor ?? Colors.transparent;
   }
 
@@ -83,22 +93,24 @@ class GlobalAppButton extends StatelessWidget {
               ? _resolvedBackground(context)
               : _resolvedDisabledColor(context),
           borderRadius: BorderRadius.circular(borderRadius.r),
-          border: borderColor != null
-              ? Border.all(
-            color: _resolvedBorderColor(context),
-            width: 1.4,
-          )
-              : null,
+          border: Border.all(
+            color: _resolvedBorderColor(context, active),
+            width: 1.2,
+          ),
         ),
         child: InkWell(
           onTap: active ? onTap : null,
           borderRadius: BorderRadius.circular(borderRadius.r),
-          splashColor: borderColor != null
-              ? AppColors.primary.withValues(alpha: .10)
-              : Colors.white.withValues(alpha: .15),
-          highlightColor: borderColor != null
-              ? AppColors.primary.withValues(alpha: .06)
-              : Colors.white.withValues(alpha: .08),
+          splashColor: active
+              ? (borderColor != null
+                  ? AppColors.brand(context).withAlpha(30)
+                  : Colors.white.withAlpha(40))
+              : Colors.transparent,
+          highlightColor: active
+              ? (borderColor != null
+                  ? AppColors.brand(context).withAlpha(15)
+                  : Colors.white.withAlpha(20))
+              : Colors.transparent,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             width: width,
@@ -123,11 +135,12 @@ class GlobalAppButton extends StatelessWidget {
                   icon!,
                   SizedBox(width: iconSpacing.w),
                 ],
-                normalText(
+                mediumText(
                   context: context,
                   text: text,
-                  color: _resolvedTextColor(context),
+                  color: _resolvedTextColor(context, active),
                   fontWeight: FontWeight.w600,
+                  fontSize: fontSize ?? 16,
                 ),
               ],
             ),
