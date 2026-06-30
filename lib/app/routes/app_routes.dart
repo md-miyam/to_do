@@ -6,6 +6,7 @@ abstract class Routes {
   static const BOTTOM_NAV_BAR = _Paths.BOTTOM_NAV_BAR;
   static const SET_DAY = _Paths.SET_DAY;
   static const TO_DAY = _Paths.TO_DAY;
+  static const MY_ACTIVITY = _Paths.MY_ACTIVITY;
 }
 
 abstract class _Paths {
@@ -13,4 +14,5 @@ abstract class _Paths {
   static const BOTTOM_NAV_BAR = '/bottom-nav-bar';
   static const SET_DAY = '/set-day';
   static const TO_DAY = '/to-day';
+  static const MY_ACTIVITY = '/my-activity';
 }

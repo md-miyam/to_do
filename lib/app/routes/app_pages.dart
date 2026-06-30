@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
+
 import '../modules/bottom_nav_bar/bindings/bottom_nav_bar_binding.dart';
 import '../modules/bottom_nav_bar/views/bottom_nav_bar_view.dart';
+import '../modules/my_activity/bindings/my_activity_binding.dart';
+import '../modules/my_activity/views/my_activity_view.dart';
 import '../modules/set_day/bindings/set_day_binding.dart';
 import '../modules/set_day/views/set_day_view.dart';
 import '../modules/to_day/bindings/to_day_binding.dart';
@@ -28,6 +31,11 @@ class AppPages {
       name: _Paths.TO_DAY,
       page: () => const ToDayView(),
       binding: ToDayBinding(),
+    ),
+    GetPage(
+      name: _Paths.MY_ACTIVITY,
+      page: () => const MyActivityView(),
+      binding: MyActivityBinding(),
     ),
   ];
 }

@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.2"
+  app_blocker:
+    dependency: "direct main"
+    description:
+      name: app_blocker
+      sha256: c4baf520156179bc6c63c21880cecd725557f9614e0e8b6c2ba9d9ecbf705dd5
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   args:
     dependency: transitive
     description:
@@ -750,7 +758,7 @@ packages:
     source: hosted
     version: "2.1.6"
   timezone:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: timezone
       sha256: dd14a3b83cfd7cb19e7888f1cbc20f258b8d71b54c06f79ac585f14093a287d1

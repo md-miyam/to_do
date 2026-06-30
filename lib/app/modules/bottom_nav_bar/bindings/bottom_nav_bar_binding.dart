@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../controllers/bottom_nav_bar_controller.dart';
 import '../../to_day/controllers/to_day_controller.dart';
 import '../../set_day/controllers/set_day_controller.dart';
+import '../../my_activity/controllers/my_activity_controller.dart';
 
 class BottomNavBarBinding extends Bindings {
   @override
@@ -15,6 +16,9 @@ class BottomNavBarBinding extends Bindings {
     );
     Get.lazyPut<SetDayController>(
       () => SetDayController(),
+    );
+    Get.lazyPut<MyActivityController>(
+      () => MyActivityController(),
     );
   }
 }

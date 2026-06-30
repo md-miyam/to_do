@@ -53,6 +53,8 @@ dependencies:
   url_launcher: ^6.3.2
   time: ^2.1.6
   animated_analog_clock: ^0.2.2
+  timezone: ^0.10.1
+  app_blocker: ^2.1.0
 
 dev_dependencies:
   flutter_test:

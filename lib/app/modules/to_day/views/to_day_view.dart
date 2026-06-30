@@ -7,6 +7,8 @@ import '../../../../core/const/app_colors.dart';
 import '../controllers/to_day_controller.dart';
 import '../widgets/timeline_task_card.dart';
 import '../widgets/day_summary_card.dart';
+import '../widgets/daily_progress_heatmap.dart';
+import '../models/daily_progress_model.dart';
 
 class ToDayView extends GetView<ToDayController> {
   const ToDayView({super.key});

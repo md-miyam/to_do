@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'app/routes/app_pages.dart';
@@ -19,6 +20,7 @@ void main() async {
   // Initialize Hive
   final hiveService = Get.put(HiveService());
   await hiveService.init();
+  await Hive.openBox('history_box');
 
   // Initialize SharedPreferences and LanguageService
   await Get.putAsync(() => SharedPreferences.getInstance());

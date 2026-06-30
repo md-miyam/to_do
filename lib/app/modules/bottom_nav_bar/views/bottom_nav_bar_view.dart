@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../core/const/app_colors.dart';
 import '../../../../core/const/icons_path.dart';
+import '../../my_activity/views/my_activity_view.dart';
 import '../../set_day/views/set_day_view.dart';
 import '../../to_day/views/to_day_view.dart';
 import '../controllers/bottom_nav_bar_controller.dart';
@@ -18,6 +19,7 @@ class BottomNavBarView extends GetView<BottomNavBarController> {
           children: const [
             ToDayView(),
             SetDayView(),
+            MyActivityView(),
           ],
         ),
       ),
@@ -69,6 +71,19 @@ class BottomNavBarView extends GetView<BottomNavBarController> {
                     color: AppColors.brand(context),
                   ),
                   label: "set_day".tr,
+                ),
+                NavigationDestination(
+                  icon: Icon(
+                    Icons.insights_outlined,
+                    size: 24,
+                    color: AppColors.subText(context),
+                  ),
+                  selectedIcon: Icon(
+                    Icons.insights,
+                    size: 24,
+                    color: AppColors.brand(context),
+                  ),
+                  label: "my_activities".tr,
                 ),
               ],
             ),

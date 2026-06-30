@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:time/time.dart';
 import '../widgets/timeline_task_card.dart';
+import '../models/daily_progress_model.dart';
 
 class ToDayController extends GetxController {
   final tasks = <Map<String, dynamic>>[].obs;
@@ -11,6 +12,9 @@ class ToDayController extends GetxController {
   final doneCount = 0.obs;
   final totalCount = 0.obs;
   final completionRate = 0.obs;
+
+  // Heatmap State
+  final history = <String, DailyProgressModel>{}.obs;
 
   // Timer State
   final currentTaskTimeLeft = "".obs;
@@ -20,8 +24,10 @@ class ToDayController extends GetxController {
   void onInit() {
     super.onInit();
     loadTasks();
+    loadHistory();
     Hive.box('tasks_box').listenable().addListener(loadTasks);
     Hive.box('sleep_tracker_box').listenable().addListener(loadTasks);
+    Hive.box('history_box').listenable().addListener(loadHistory);
     _startTimer();
     
     // Auto refresh status every minute to switch active tasks
@@ -29,6 +35,42 @@ class ToDayController extends GetxController {
       tasks.refresh();
       _calculateStats();
     });
+  }
+
+  void loadHistory() {
+    final box = Hive.box('history_box');
+    final Map<String, DailyProgressModel> historyMap = {};
+    
+    for (var key in box.keys) {
+      final data = box.get(key);
+      if (data != null) {
+        historyMap[key.toString()] = DailyProgressModel.fromJson(Map<String, dynamic>.from(data));
+      }
+    }
+    history.value = historyMap;
+  }
+
+  void _updateHistory() {
+    final todayStr = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    
+    int denied = 0;
+    int pending = 0;
+    for (var task in tasks) {
+      final status = getTaskStatus(task);
+      if (status == TaskStatus.missed) denied++;
+      if (status == TaskStatus.pending) pending++;
+    }
+
+    final progress = DailyProgressModel(
+      date: todayStr,
+      totalTasks: tasks.length,
+      completedTasks: doneCount.value,
+      deniedTasks: denied,
+      pendingTasks: pending,
+      completionRate: completionRate.value,
+    );
+
+    Hive.box('history_box').put(todayStr, progress.toJson());
   }
 
   Timer? _statusRefreshTimer;
@@ -183,6 +225,8 @@ class ToDayController extends GetxController {
     doneCount.value = done;
     totalCount.value = tasks.length;
     completionRate.value = ((done / tasks.length) * 100).toInt();
+
+    _updateHistory();
   }
 
   TaskStatus getTaskStatus(Map<String, dynamic> task) {
