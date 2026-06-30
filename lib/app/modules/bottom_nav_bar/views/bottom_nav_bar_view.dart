@@ -47,43 +47,43 @@ class BottomNavBarView extends GetView<BottomNavBarController> {
               labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
               destinations: [
                 NavigationDestination(
-                  icon: Image.asset(
-                    IconsPath.toDay,
-                    height: 22,
-                    color: AppColors.subText(context), // Adaptive inactive color
+                  icon: ImageIcon(
+                    const AssetImage(IconsPath.toDay),
+                    size: 24,
+                    color: AppColors.subText(context),
                   ),
-                  selectedIcon: Image.asset(
-                    IconsPath.toDay,
-                    height: 22,
-                    color: AppColors.brand(context), // Adaptive active color
+                  selectedIcon: ImageIcon(
+                    const AssetImage(IconsPath.toDay),
+                    size: 24,
+                    color: AppColors.brand(context),
                   ),
                   label: "to_day".tr,
                 ),
                 NavigationDestination(
-                  icon: Image.asset(
-                    IconsPath.setDay,
-                    height: 22,
+                  icon: ImageIcon(
+                    const AssetImage(IconsPath.setDay),
+                    size: 24,
                     color: AppColors.subText(context),
                   ),
-                  selectedIcon: Image.asset(
-                    IconsPath.setDay,
-                    height: 22,
+                  selectedIcon: ImageIcon(
+                    const AssetImage(IconsPath.setDay),
+                    size: 24,
                     color: AppColors.brand(context),
                   ),
                   label: "set_day".tr,
                 ),
                 NavigationDestination(
-                  icon: Icon(
-                    Icons.insights_outlined,
+                  icon: ImageIcon(
+                    const AssetImage(IconsPath.me),
                     size: 24,
                     color: AppColors.subText(context),
                   ),
-                  selectedIcon: Icon(
-                    Icons.insights,
+                  selectedIcon: ImageIcon(
+                    const AssetImage(IconsPath.me),
                     size: 24,
                     color: AppColors.brand(context),
                   ),
-                  label: "my_activities".tr,
+                  label: "me".tr,
                 ),
               ],
             ),

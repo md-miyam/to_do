@@ -15,6 +15,7 @@ class AppKeys {
   static const String cancel = 'cancel';
   static const String toDay = 'to_day';
   static const String setDay = 'set_day';
+  static const String me = 'me';
   static const String theme = 'theme';
   static const String light = 'light';
   static const String dark = 'dark';

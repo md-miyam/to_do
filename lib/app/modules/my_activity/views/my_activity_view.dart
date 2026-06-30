@@ -129,7 +129,7 @@ class MyActivityView extends GetView<MyActivityController> {
         children: [
           SizedBox(width: 40.w), // Placeholder
           Text(
-            'activity_history'.tr,
+            'me'.tr,
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.bold,

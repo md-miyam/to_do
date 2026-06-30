@@ -9,6 +9,7 @@ final Map<String, String> enUs = {
   'confirm': 'Confirm',
   'cancel': 'Cancel',
   'to_day': 'To Day',
+  'me': 'Me',
   'cant_stop_it': "You can't stop it",
   'set_day': 'Set Day',
   'theme': 'Theme',

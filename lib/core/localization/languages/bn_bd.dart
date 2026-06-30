@@ -9,6 +9,7 @@ final Map<String, String> bnBd = {
   'confirm': 'নিশ্চিত করুন',
   'cancel': 'বাতিল করুন',
   'to_day': 'আজকের কাজ',
+  'me': 'আমি',
   'cant_stop_it': 'সময়কে থামানো যায় না',
   'set_day': 'দিন নির্ধারণ',
   'theme': 'থিম',
