@@ -20,10 +20,9 @@ class SetDayController extends GetxController {
   final isRoutineBuilderVisible = false.obs;
   final routineStartTime = DateTime.now().obs;
   final routineEndTime = DateTime.now().add(const Duration(minutes: 30)).obs;
-  final selectedCategory = "".obs; // Initially empty
+  final selectedCategory = "".obs; 
   final links = <String>[].obs;
   
-  // Track the very first start time of the cycle (the original wake-up time)
   final cycleInitialStartTime = DateTime.now().obs;
   final isDayComplete = false.obs;
 
@@ -49,7 +48,6 @@ class SetDayController extends GetxController {
     linkInputController = TextEditingController();
     wakeUpTime.value = "--:--";
 
-    // Clear error when typing
     taskNameController.addListener(() {
       if (taskNameError.value != null && taskNameController.text.isNotEmpty) {
         taskNameError.value = null;
@@ -68,7 +66,7 @@ class SetDayController extends GetxController {
   // --- Sleep Tracker Methods ---
 
   void pickStartTime(BuildContext context) {
-    if (isRoutineBuilderVisible.value) return; // Prevent change if routine started
+    if (isRoutineBuilderVisible.value) return;
 
     picker.DatePicker.showTime12hPicker(
       context,
@@ -85,7 +83,7 @@ class SetDayController extends GetxController {
   }
 
   void updateDuration(String value) {
-    if (isRoutineBuilderVisible.value) return; // Prevent change if routine started
+    if (isRoutineBuilderVisible.value) return;
 
     if (value.trim().isEmpty) {
       isSleepInfoSet.value = false;
@@ -114,10 +112,14 @@ class SetDayController extends GetxController {
     wakeUpTime.value = "--:--";
     duration.value = 8.0;
     startTime.value = DateTime(2024, 1, 1, 22, 0);
-    _prepareNextTask(); // Clears current form too
+    _prepareNextTask();
   }
 
   void onAfterWakingUp() {
+    // Before starting a new day plan, clear previous data for this specific date
+    // as per user request: "remove previous data and make new day"
+    _clearExistingTasksForSelectedDate();
+
     final wakeUp = startTime.value.add(Duration(minutes: (duration.value * 60).toInt()));
     routineStartTime.value = wakeUp;
     cycleInitialStartTime.value = wakeUp;
@@ -125,6 +127,17 @@ class SetDayController extends GetxController {
     isRoutineBuilderVisible.value = true;
     isDayComplete.value = false;
     _checkDayCompletion();
+  }
+
+  void _clearExistingTasksForSelectedDate() {
+    final box = HiveService.to.read('tasks_box', 'all_tasks') ?? [];
+    final allTasks = (box as List).map((task) => Map<String, dynamic>.from(task)).toList();
+    final dateStr = DateFormat('yyyy-MM-dd').format(selectedDate.value);
+    
+    // Remove all tasks matching the selected date
+    allTasks.removeWhere((task) => task['date'] == dateStr);
+    
+    HiveService.to.write('tasks_box', 'all_tasks', allTasks);
   }
 
   // --- Routine Builder Methods ---
@@ -193,18 +206,25 @@ class SetDayController extends GetxController {
     if (hasError) return;
 
     final taskData = {
+      'id': DateTime.now().millisecondsSinceEpoch.toString(),
       'name': taskNameController.text.trim(),
       'start_time': DateFormat('hh:mm a').format(routineStartTime.value),
       'end_time': DateFormat('hh:mm a').format(routineEndTime.value),
+      'date': DateFormat('yyyy-MM-dd').format(selectedDate.value), // ADDED DATE
       'category': selectedCategory.value,
       'description': descriptionController.text.trim(),
       'links': links.toList(),
       'type': routineTypeTitle,
+      'is_done': false,
     };
 
-    await HiveService.to.write('tasks_box', DateTime.now().toIso8601String(), taskData);
+    // Store in a centralized list for easier filtering
+    final box = HiveService.to.read('tasks_box', 'all_tasks') ?? [];
+    final allTasks = (box as List).map((task) => Map<String, dynamic>.from(task)).toList();
+    allTasks.add(taskData);
+    await HiveService.to.write('tasks_box', 'all_tasks', allTasks);
+
     Get.snackbar("success".tr, "task_added".tr);
-    
     _prepareNextTask();
   }
 
@@ -267,7 +287,12 @@ class SetDayController extends GetxController {
         child: child!,
       ),
     );
-    if (picked != null) selectedDate.value = picked;
+    if (picked != null) {
+      selectedDate.value = picked;
+      // When date changes, reset the builder to show data for that specific day
+      isRoutineBuilderVisible.value = false;
+      isSleepInfoSet.value = false;
+    }
   }
 
   void showSettings(BuildContext context) {
