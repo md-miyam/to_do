@@ -7,6 +7,7 @@ import '../../focus_shield/views/focus_shield_view.dart';
 import '../../to_day/models/daily_progress_model.dart';
 import '../../to_day/widgets/daily_progress_heatmap.dart';
 import '../controllers/my_activity_controller.dart';
+import '../widgets/digital_wellbeing_section.dart';
 
 class MyActivityView extends GetView<MyActivityController> {
   const MyActivityView({super.key});
@@ -55,6 +56,11 @@ class MyActivityView extends GetView<MyActivityController> {
                     icon: Icons.security_outlined,
                     onTap: () => Get.toNamed(Routes.FOCUS_SHIELD),
                   ),
+                  
+                  SizedBox(height: 24.h),
+
+                  // Digital Wellbeing Section
+                  const DigitalWellbeingSection(),
                   
                   SizedBox(height: 24.h),
                   
