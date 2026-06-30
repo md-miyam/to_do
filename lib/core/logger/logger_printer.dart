@@ -13,23 +13,42 @@ final class LoggerPrinter {
   ) {
     final color = _color(level);
 
-    final chunks = LoggerUtils.splitLongText(message);
+    // Split long messages to prevent truncation in some consoles
+    final lines = message.split('\n');
+    
+    for (final line in lines) {
+      final chunks = LoggerUtils.splitLongText(line, chunkSize: 800);
+      for (final chunk in chunks) {
+        final output = LoggerColors.wrap(
+          chunk,
+          color,
+          boldText: level.index >= LoggerLevel.warning.index,
+        );
 
-    for (final chunk in chunks) {
-      final output = LoggerColors.wrap(
-        chunk,
-        color,
-        boldText: true,
-      );
+        // developer.log works well in Android Studio with proper names
+        developer.log(
+          output,
+          name: 'APP_LOGGER',
+          level: _developerLogLevel(level),
+        );
 
-      developer.log(
-        output,
-        name: 'AppLogger',
-      );
-
-      if (kDebugMode) {
-        debugPrint(output);
+        // debugPrint for standard console output
+        if (kDebugMode) {
+          debugPrint(output);
+        }
       }
+    }
+  }
+
+  static int _developerLogLevel(LoggerLevel level) {
+    switch (level) {
+      case LoggerLevel.trace: return 0;
+      case LoggerLevel.debug: return 500;
+      case LoggerLevel.info: return 800;
+      case LoggerLevel.success: return 800;
+      case LoggerLevel.warning: return 900;
+      case LoggerLevel.error: return 1000;
+      case LoggerLevel.critical: return 2000;
     }
   }
 
@@ -42,7 +61,7 @@ final class LoggerPrinter {
       case LoggerLevel.info:
         return LoggerColors.blue;
       case LoggerLevel.success:
-        return LoggerColors.green;
+        return LoggerColors.brightGreen;
       case LoggerLevel.warning:
         return LoggerColors.yellow;
       case LoggerLevel.error:

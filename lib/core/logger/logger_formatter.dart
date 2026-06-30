@@ -15,89 +15,65 @@ final class LoggerFormatter {
   }) {
     final buffer = StringBuffer();
 
-    buffer.writeln(LoggerUtils.horizontal);
-    buffer.writeln(_header(level, title));
-    buffer.writeln(LoggerUtils.horizontal);
+    // Top Border
+    buffer.writeln(LoggerUtils.topBorder);
+    
+    // Header Section
+    buffer.writeln('${LoggerUtils.vertical} ${_header(level, title)}');
+    buffer.writeln(LoggerUtils.middleDivider);
 
+    // Meta Information
     if (LoggerConfig.showTime) {
-      buffer.writeln(
-        LoggerUtils.value(
-          'Time',
-          LoggerUtils.formatTime(DateTime.now()),
-        ),
-      );
-      buffer.writeln();
+      buffer.writeln('${LoggerUtils.vertical} 🕒 TIME    : ${LoggerUtils.formatTime(DateTime.now())}');
     }
 
-    buffer.writeln(
-      LoggerUtils.value(
-        'Message',
-        LoggerUtils.normalize(message),
-      ),
-    );
+    // Message Section
+    buffer.writeln('${LoggerUtils.vertical} 📝 MESSAGE :');
+    buffer.writeln(LoggerUtils.indent(LoggerUtils.normalize(message), spaces: 2));
 
+    // Data Section
     if (data != null) {
-      buffer.writeln();
-      buffer.writeln(
-        LoggerUtils.value(
-          'Data',
-          LoggerUtils.normalize(data),
-        ),
-      );
+      buffer.writeln(LoggerUtils.middleDivider);
+      buffer.writeln('${LoggerUtils.vertical} 📦 DATA    :');
+      buffer.writeln(LoggerUtils.indent(LoggerUtils.normalize(data), spaces: 2));
     }
 
+    // Error Section
     if (error != null) {
-      buffer.writeln();
-      buffer.writeln(
-        LoggerUtils.value(
-          'Error',
-          LoggerUtils.normalize(error),
-        ),
-      );
+      buffer.writeln(LoggerUtils.middleDivider);
+      buffer.writeln('${LoggerUtils.vertical} 🚨 ERROR   :');
+      buffer.writeln(LoggerUtils.indent(LoggerUtils.normalize(error), spaces: 2));
     }
 
+    // Stack Trace Section
     if (stackTrace != null && LoggerConfig.showStackTrace) {
-      buffer.writeln();
-      buffer.writeln(
-        LoggerUtils.section(
-          'Stack Trace',
-          stackTrace,
-        ),
-      );
+      buffer.writeln(LoggerUtils.middleDivider);
+      buffer.writeln('${LoggerUtils.vertical} 👣 TRACE   :');
+      buffer.writeln(LoggerUtils.indent(stackTrace.toString(), spaces: 2));
     }
 
-    buffer.writeln(LoggerUtils.horizontal);
+    // Bottom Border
+    buffer.writeln(LoggerUtils.bottomBorder);
 
     return buffer.toString();
   }
 
-  static String _header(
-    LoggerLevel level,
-    String title,
-  ) {
-    return '${_icon(level)} $title';
+  static String _header(LoggerLevel level, String title) {
+    final icon = _icon(level);
+    final label = level.name.toUpperCase();
+    return '$icon [$label] - $title';
   }
 
   static String _icon(LoggerLevel level) {
-    if (!LoggerConfig.showIcon) {
-      return '';
-    }
-
+    if (!LoggerConfig.showIcon) return '';
     switch (level) {
-      case LoggerLevel.trace:
-        return '⚪';
-      case LoggerLevel.debug:
-        return '🔍';
-      case LoggerLevel.info:
-        return 'ℹ️';
-      case LoggerLevel.success:
-        return '✅';
-      case LoggerLevel.warning:
-        return '⚠️';
-      case LoggerLevel.error:
-        return '❌';
-      case LoggerLevel.critical:
-        return '🔥';
+      case LoggerLevel.trace: return '🔍';
+      case LoggerLevel.debug: return '🛠️';
+      case LoggerLevel.info: return '💡';
+      case LoggerLevel.success: return '✅';
+      case LoggerLevel.warning: return '⚠️';
+      case LoggerLevel.error: return '❌';
+      case LoggerLevel.critical: return '🔥';
     }
   }
 }

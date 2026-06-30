@@ -65,4 +65,11 @@ final Map<String, String> enUs = {
   'plan_tomorrow': 'Plan Tomorrow',
   'view_past_summaries': 'View Past Summaries',
   'no_tasks_yet': 'No tasks added for today yet.',
+  'sleep_wake_up': 'Sleep & Wake Up',
+  'rest_well': 'Deep rest and recovery...',
+  'deny': 'Deny',
+  'pending': 'Pending',
+  'category': 'Category',
+  'description': 'Description',
+  'app_name': 'DayTrack',
 };

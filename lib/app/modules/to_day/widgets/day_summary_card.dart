@@ -2,22 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../core/const/app_colors.dart';
-import '../../../../core/global/app_btn.dart';
 
 class DaySummaryCard extends StatelessWidget {
   final int doneCount;
   final int notDoneCount;
   final int completionRate;
-  final VoidCallback onPlanTomorrow;
-  final VoidCallback onViewPast;
 
   const DaySummaryCard({
     super.key,
     required this.doneCount,
     required this.notDoneCount,
     required this.completionRate,
-    required this.onPlanTomorrow,
-    required this.onViewPast,
   });
 
   @override
@@ -56,30 +51,6 @@ class DaySummaryCard extends StatelessWidget {
               SizedBox(width: 10.w),
               _buildStatBox(context, '$completionRate%', 'rate'.tr, AppColors.brand(context)),
             ],
-          ),
-          SizedBox(height: 20.h),
-          GlobalAppButton(
-            text: 'plan_tomorrow'.tr,
-            onTap: onPlanTomorrow,
-            height: 48.h,
-            borderRadius: 12.r,
-            backgroundColor: AppColors.brand(context),
-            textColor: AppColors.isDark(context) ? Colors.black : Colors.white,
-            icon: Icon(Icons.calendar_today_outlined, 
-              size: 18.sp, 
-              color: AppColors.isDark(context) ? Colors.black : Colors.white
-            ),
-          ),
-          SizedBox(height: 10.h),
-          GlobalAppButton(
-            text: 'view_past_summaries'.tr,
-            onTap: onViewPast,
-            height: 48.h,
-            borderRadius: 12.r,
-            backgroundColor: AppColors.surface(context),
-            textColor: AppColors.text(context),
-            borderColor: AppColors.border(context),
-            icon: Icon(Icons.history, size: 20.sp, color: AppColors.brand(context)),
           ),
         ],
       ),

@@ -159,7 +159,7 @@ class SetDayView extends GetView<SetDayController> {
             ),
           ),
           Text(
-            'DayTrack',
+            'app_name'.tr,
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.bold,

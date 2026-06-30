@@ -116,8 +116,6 @@ class SetDayController extends GetxController {
   }
 
   void onAfterWakingUp() {
-    // Before starting a new day plan, clear previous data for this specific date
-    // as per user request: "remove previous data and make new day"
     _clearExistingTasksForSelectedDate();
 
     final wakeUp = startTime.value.add(Duration(minutes: (duration.value * 60).toInt()));
@@ -126,6 +124,17 @@ class SetDayController extends GetxController {
     routineEndTime.value = wakeUp.add(const Duration(minutes: 30));
     isRoutineBuilderVisible.value = true;
     isDayComplete.value = false;
+
+    // Save sleep data to Hive for ToDay view
+    final sleepData = {
+      'start_time': startTime.value,
+      'duration': duration.value,
+      'date': DateFormat('yyyy-MM-dd').format(selectedDate.value),
+      'is_done': false,
+      'is_denied': false,
+    };
+    HiveService.to.write('sleep_tracker_box', 'last_sleep', sleepData);
+
     _checkDayCompletion();
   }
 
@@ -134,9 +143,7 @@ class SetDayController extends GetxController {
     final allTasks = (box as List).map((task) => Map<String, dynamic>.from(task)).toList();
     final dateStr = DateFormat('yyyy-MM-dd').format(selectedDate.value);
     
-    // Remove all tasks matching the selected date
     allTasks.removeWhere((task) => task['date'] == dateStr);
-    
     HiveService.to.write('tasks_box', 'all_tasks', allTasks);
   }
 
@@ -192,17 +199,14 @@ class SetDayController extends GetxController {
     if (isDayComplete.value) return;
 
     bool hasError = false;
-
     if (taskNameController.text.trim().isEmpty) {
       taskNameError.value = "task_name_required".tr;
       hasError = true;
     }
-    
     if (selectedCategory.value.isEmpty) {
       categoryError.value = "category_required".tr;
       hasError = true;
     }
-
     if (hasError) return;
 
     final taskData = {
@@ -210,15 +214,15 @@ class SetDayController extends GetxController {
       'name': taskNameController.text.trim(),
       'start_time': DateFormat('hh:mm a').format(routineStartTime.value),
       'end_time': DateFormat('hh:mm a').format(routineEndTime.value),
-      'date': DateFormat('yyyy-MM-dd').format(selectedDate.value), // ADDED DATE
+      'date': DateFormat('yyyy-MM-dd').format(selectedDate.value),
       'category': selectedCategory.value,
       'description': descriptionController.text.trim(),
       'links': links.toList(),
       'type': routineTypeTitle,
       'is_done': false,
+      'is_denied': false, // Added is_denied
     };
 
-    // Store in a centralized list for easier filtering
     final box = HiveService.to.read('tasks_box', 'all_tasks') ?? [];
     final allTasks = (box as List).map((task) => Map<String, dynamic>.from(task)).toList();
     allTasks.add(taskData);
@@ -269,6 +273,7 @@ class SetDayController extends GetxController {
   // --- General Logic ---
 
   Future<void> selectDate(BuildContext context) async {
+    final bool isDark = AppColors.isDark(context);
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate.value,
@@ -276,12 +281,27 @@ class SetDayController extends GetxController {
       lastDate: DateTime(2030),
       builder: (context, child) => Theme(
         data: Theme.of(context).copyWith(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppColors.brand(context),
-            primary: AppColors.brand(context),
-            onPrimary: AppColors.isDark(context) ? Colors.black : Colors.white,
-            surface: AppColors.surface(context),
-            onSurface: AppColors.text(context),
+          brightness: isDark ? Brightness.dark : Brightness.light,
+          colorScheme: isDark
+              ? ColorScheme.dark(
+                  primary: AppColors.brand(context),
+                  onPrimary: Colors.black,
+                  surface: AppColors.surface(context),
+                  onSurface: AppColors.text(context),
+                  secondary: AppColors.brand(context),
+                )
+              : ColorScheme.light(
+                  primary: AppColors.brand(context),
+                  onPrimary: Colors.white,
+                  surface: AppColors.surface(context),
+                  onSurface: AppColors.text(context),
+                  secondary: AppColors.brand(context),
+                ),
+          dialogBackgroundColor: AppColors.surface(context),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: AppColors.brand(context),
+            ),
           ),
         ),
         child: child!,
@@ -289,7 +309,6 @@ class SetDayController extends GetxController {
     );
     if (picked != null) {
       selectedDate.value = picked;
-      // When date changes, reset the builder to show data for that specific day
       isRoutineBuilderVisible.value = false;
       isSleepInfoSet.value = false;
     }

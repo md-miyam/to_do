@@ -65,4 +65,11 @@ final Map<String, String> bnBd = {
   'plan_tomorrow': 'আগামীকাল পরিকল্পনা করুন',
   'view_past_summaries': 'অতীতের সারসংক্ষেপ দেখুন',
   'no_tasks_yet': 'আজকের জন্য কোনো কাজ যোগ করা হয়নি।',
+  'sleep_wake_up': 'ঘুম এবং জেগে ওঠা',
+  'rest_well': 'গভীর বিশ্রাম এবং সুস্থতা...',
+  'deny': 'বাতিল',
+  'pending': 'মুলতবি',
+  'category': 'বিভাগ',
+  'description': 'বিবরণ',
+  'app_name': 'ডে-ট্র্যাক',
 };

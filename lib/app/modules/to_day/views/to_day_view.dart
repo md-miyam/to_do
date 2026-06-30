@@ -31,13 +31,18 @@ class ToDayView extends GetView<ToDayController> {
                       ...controller.tasks.asMap().entries.map((entry) {
                         final index = entry.key;
                         final task = entry.value;
+                        final status = controller.getTaskStatus(task);
+                        
                         return TimelineTaskCard(
                           title: task['name'] ?? 'Untitled',
                           timeRange: '${task['start_time']} - ${task['end_time']}',
                           category: task['category'] ?? 'routine',
                           description: task['description'],
-                          status: controller.getTaskStatus(task),
+                          links: (task['links'] as List?)?.map((e) => e.toString()).toList() ?? [],
+                          status: status,
+                          timerText: status == TaskStatus.current ? controller.currentTaskTimeLeft.value : null,
                           onDoneTap: () => controller.markTaskAsDone(index),
+                          onDenyTap: () => controller.markTaskAsDenied(index),
                         );
                       }),
                       
@@ -46,10 +51,8 @@ class ToDayView extends GetView<ToDayController> {
                       // Day Summary Section
                       DaySummaryCard(
                         doneCount: controller.doneCount.value,
-                        notDoneCount: controller.notDoneCount.value,
+                        notDoneCount: controller.totalCount.value - controller.doneCount.value,
                         completionRate: controller.completionRate.value,
-                        onPlanTomorrow: controller.planTomorrow,
-                        onViewPast: controller.viewPastSummaries,
                       ),
                       
                       SizedBox(height: 40.h),
@@ -89,7 +92,7 @@ class ToDayView extends GetView<ToDayController> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Daily Progress',
+            'daily_progress'.tr,
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.bold,
