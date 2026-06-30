@@ -22,10 +22,6 @@ class AppInitializer {
       // 2. Storage Layer (Hive)
       final hiveService = Get.put(HiveService());
       await hiveService.init();
-      await Hive.openBox('history_box');
-      await Hive.openBox('settings_box');
-      await Hive.openBox('tasks_box');
-      await Hive.openBox('sleep_tracker_box');
 
       // 3. System Preferences
       await Get.putAsync(() => SharedPreferences.getInstance());

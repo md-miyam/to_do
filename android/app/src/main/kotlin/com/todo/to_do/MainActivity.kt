@@ -20,17 +20,25 @@ import java.io.ByteArrayOutputStream
 import java.util.*
 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "com.todo.to_do/usage_stats"
+    private val channelName = "com.todo.to_do/usage_stats"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+        
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelName).setMethodCallHandler { call, result ->
             when (call.method) {
-                "checkUsagePermission" -> result.success(hasUsageStatsPermission())
+                "checkUsagePermission" -> {
+                    result.success(hasUsageStatsPermission())
+                }
                 "grantUsagePermission" -> {
-                    val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
-                    startActivity(intent)
-                    result.success(true)
+                    try {
+                        val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                        result.success(true)
+                    } catch (e: Exception) {
+                        result.error("SETTING_NOT_FOUND", "Could not open usage settings", null)
+                    }
                 }
                 "getUsageStats" -> {
                     val startTime = call.argument<Long>("startTime") ?: 0L
@@ -53,7 +61,9 @@ class MainActivity : FlutterActivity() {
                         result.error("INVALID_PACKAGE", "Package name is null", null)
                     }
                 }
-                else -> result.notImplemented()
+                else -> {
+                    result.notImplemented()
+                }
             }
         }
     }
@@ -63,6 +73,7 @@ class MainActivity : FlutterActivity() {
         val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             appOps.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
         } else {
+            @Suppress("DEPRECATION")
             appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
         }
         return mode == AppOpsManager.MODE_ALLOWED
@@ -70,16 +81,16 @@ class MainActivity : FlutterActivity() {
 
     private fun getUsageStatistics(startTime: Long, endTime: Long): List<Map<String, Any>> {
         val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        val stats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, startTime, endTime)
+        val stats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime)
         
         val result = mutableListOf<Map<String, Any>>()
         if (stats != null) {
-            // Group by package name because queryUsageStats can return multiple entries for same package
             val aggregatedStats = mutableMapOf<String, UsageStats>()
             for (usageStats in stats) {
-                val existing = aggregatedStats[usageStats.packageName]
+                val pkg = usageStats.packageName
+                val existing = aggregatedStats[pkg]
                 if (existing == null || usageStats.totalTimeInForeground > existing.totalTimeInForeground) {
-                     aggregatedStats[usageStats.packageName] = usageStats
+                     aggregatedStats[pkg] = usageStats
                 }
             }
 
@@ -98,7 +109,8 @@ class MainActivity : FlutterActivity() {
 
     private fun getAppIcon(packageName: String): ByteArray? {
         return try {
-            val icon = packageManager.getApplicationIcon(packageName)
+            val pm = packageManager
+            val icon = pm.getApplicationIcon(packageName)
             val bitmap = drawableToBitmap(icon)
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
@@ -110,8 +122,9 @@ class MainActivity : FlutterActivity() {
 
     private fun getAppLabel(packageName: String): String {
         return try {
-            val info = packageManager.getApplicationInfo(packageName, 0)
-            packageManager.getApplicationLabel(info).toString()
+            val pm = packageManager
+            val info = pm.getApplicationInfo(packageName, 0)
+            pm.getApplicationLabel(info).toString()
         } catch (e: Exception) {
             packageName
         }

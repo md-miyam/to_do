@@ -11,6 +11,7 @@ class HiveService extends GetxService {
   static const String _sleepTrackerBox = 'sleep_tracker_box';
   static const String _tasksBox = 'tasks_box';
   static const String _wellbeingBox = 'wellbeing_box';
+  static const String _historyBox = 'history_box';
 
   // --- Initialize Hive ---
   Future<void> init() async {
@@ -21,6 +22,7 @@ class HiveService extends GetxService {
     await Hive.openBox(_sleepTrackerBox);
     await Hive.openBox(_tasksBox);
     await Hive.openBox(_wellbeingBox);
+    await Hive.openBox(_historyBox);
   }
 
   // ===========================================================================
