@@ -139,6 +139,16 @@ class SetDayView extends GetView<SetDayController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          SizedBox(width: 40.w), // Placeholder to keep title centered
+          Text(
+            'app_name'.tr,
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              color: AppColors.brand(context),
+              letterSpacing: 0.5,
+            ),
+          ),
           Material(
             color: Colors.transparent,
             child: InkWell(
@@ -152,34 +162,6 @@ class SetDayView extends GetView<SetDayController> {
                 ),
                 child: Icon(
                   Icons.calendar_today_outlined,
-                  color: AppColors.brand(context),
-                  size: 18.sp,
-                ),
-              ),
-            ),
-          ),
-          Text(
-            'app_name'.tr,
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
-              color: AppColors.brand(context),
-              letterSpacing: 0.5,
-            ),
-          ),
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () => controller.showSettings(context),
-              borderRadius: BorderRadius.circular(10.r),
-              child: Container(
-                padding: EdgeInsets.all(8.w),
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.border(context)),
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: Icon(
-                  Icons.settings_outlined,
                   color: AppColors.brand(context),
                   size: 18.sp,
                 ),

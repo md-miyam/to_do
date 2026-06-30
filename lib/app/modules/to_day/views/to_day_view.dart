@@ -4,11 +4,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:animated_analog_clock/animated_analog_clock.dart';
 import '../../../../core/const/app_colors.dart';
-import '../controllers/to_day_controller.dart';
-import '../widgets/timeline_task_card.dart';
 import '../widgets/day_summary_card.dart';
-import '../widgets/daily_progress_heatmap.dart';
-import '../models/daily_progress_model.dart';
+import '../widgets/timeline_task_card.dart';
+import '../controllers/to_day_controller.dart';
 
 class ToDayView extends GetView<ToDayController> {
   const ToDayView({super.key});
@@ -74,8 +72,8 @@ class ToDayView extends GetView<ToDayController> {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + 10.h,
-        bottom: 16.h,
+        top: MediaQuery.of(context).padding.top + 8.h,
+        bottom: 12.h,
         left: 16.w,
         right: 16.w,
       ),
@@ -87,8 +85,8 @@ class ToDayView extends GetView<ToDayController> {
         boxShadow: [
           BoxShadow(
             color: AppColors.shadow(context),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -98,74 +96,96 @@ class ToDayView extends GetView<ToDayController> {
           // Left: Time/Clock
           Row(
             children: [
-              SizedBox(
-                width: 45.w,
-                height: 45.w,
-                child: AnimatedAnalogClock(
-                  location: 'Asia/Dhaka',
-                  hourHandColor: AppColors.brand(context),
-                  minuteHandColor: AppColors.brand(context),
-                  secondHandColor: AppColors.error,
-                  centerDotColor: AppColors.brand(context),
-                  backgroundColor: AppColors.background(context),
-                  dialType: DialType.none,
-                  size: 45.w,
+              Container(
+                padding: EdgeInsets.all(2.w),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      AppColors.brand(context).withAlpha(150),
+                      AppColors.brand(context).withAlpha(50),
+                    ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.brand(context).withAlpha(30),
+                      blurRadius: 12,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: Container(
+                  padding: EdgeInsets.all(3.w),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.surface(context),
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.background(context),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withAlpha(20),
+                          blurRadius: 2,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: SizedBox(
+                      width: 38.w,
+                      height: 38.w,
+                      child: AnimatedAnalogClock(
+                        location: 'Asia/Dhaka',
+                        hourHandColor: AppColors.brand(context),
+                        minuteHandColor: AppColors.brand(context),
+                        secondHandColor: AppColors.error,
+                        centerDotColor: AppColors.brand(context),
+                        hourDashColor: AppColors.brand(context).withAlpha(200),
+                        minuteDashColor: AppColors.brand(context).withAlpha(100),
+                        backgroundColor: Colors.transparent,
+                        dialType: DialType.dashes,
+                        size: 38.w,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              SizedBox(width: 8.w),
+              SizedBox(width: 12.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    DateFormat('hh:mm').format(DateTime.now()),
+                    'cant_stop_it'.tr,
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                       color: AppColors.text(context),
-                      fontFamily: 'monospace',
                     ),
                   ),
                   Text(
-                    DateFormat('a').format(DateTime.now()),
+                    DateFormat('EEEE').format(DateTime.now()), // Day name like "Monday"
                     style: TextStyle(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.brand(context),
+                      fontSize: 11.sp,
+                      color: AppColors.subText(context),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
               ),
             ],
           ),
-          
-          // Center/Title
-          Expanded(
-            child: Text(
-              'do_or_die'.tr,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w900,
-                color: AppColors.brand(context),
-                letterSpacing: 1.0,
-              ),
-            ),
-          ),
 
           // Right: Date Block
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
             decoration: BoxDecoration(
-              color: AppColors.brand(context),
+              color: AppColors.brand(context).withAlpha(20),
               borderRadius: BorderRadius.circular(12.r),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.brand(context).withAlpha(60),
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+              border: Border.all(color: AppColors.brand(context).withAlpha(40)),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -175,7 +195,7 @@ class ToDayView extends GetView<ToDayController> {
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.isDark(context) ? Colors.black : Colors.white,
+                    color: AppColors.brand(context),
                   ),
                 ),
                 Text(
@@ -183,7 +203,7 @@ class ToDayView extends GetView<ToDayController> {
                   style: TextStyle(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.isDark(context) ? Colors.black.withAlpha(180) : Colors.white.withAlpha(180),
+                    color: AppColors.brand(context),
                   ),
                 ),
               ],

@@ -39,16 +39,6 @@ class DailyProgressHeatmap extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'activity_history'.tr,
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-              color: AppColors.text(context),
-            ),
-          ),
-          SizedBox(height: 16.h),
-          
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             reverse: true, // Show most recent on the right

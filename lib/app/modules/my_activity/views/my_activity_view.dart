@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../core/const/app_colors.dart';
+import '../../../routes/app_pages.dart';
+import '../../focus_shield/views/focus_shield_view.dart';
 import '../../to_day/models/daily_progress_model.dart';
 import '../../to_day/widgets/daily_progress_heatmap.dart';
 import '../controllers/my_activity_controller.dart';
@@ -22,15 +24,7 @@ class MyActivityView extends GetView<MyActivityController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'activity_history'.tr,
-                    style: TextStyle(
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.text(context),
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 8.h),
                   
                   // Heatmap Section
                   Obx(() {
@@ -50,6 +44,19 @@ class MyActivityView extends GetView<MyActivityController> {
                   }),
                   
                   SizedBox(height: 24.h),
+
+                  // Focus Shield Section
+                  _buildSectionTitle(context, 'tools'.tr),
+                  SizedBox(height: 12.h),
+                  _buildToolCard(
+                    context,
+                    title: 'focus_shield'.tr,
+                    subtitle: 'block_distractions_desc'.tr,
+                    icon: Icons.security_outlined,
+                    onTap: () => Get.toNamed(Routes.FOCUS_SHIELD),
+                  ),
+                  
+                  SizedBox(height: 24.h),
                   
                   // Placeholder for future activities/analytics
                   _buildEmptyStatePlaceholder(context),
@@ -58,6 +65,39 @@ class MyActivityView extends GetView<MyActivityController> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(BuildContext context, String title) {
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 18.sp,
+        fontWeight: FontWeight.bold,
+        color: AppColors.text(context),
+      ),
+    );
+  }
+
+  Widget _buildToolCard(BuildContext context, {required String title, required String subtitle, required IconData icon, required VoidCallback onTap}) {
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.r),
+        side: BorderSide(color: AppColors.border(context).withAlpha(40)),
+      ),
+      color: AppColors.surface(context),
+      child: ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        leading: CircleAvatar(
+          backgroundColor: AppColors.brand(context).withAlpha(20),
+          child: Icon(icon, color: AppColors.brand(context)),
+        ),
+        title: Text(title, style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
+        subtitle: Text(subtitle, style: TextStyle(fontSize: 12.sp, color: AppColors.subText(context))),
+        trailing: Icon(Icons.arrow_forward_ios, size: 14.sp, color: AppColors.subText(context)),
+        onTap: onTap,
       ),
     );
   }
@@ -84,16 +124,39 @@ class MyActivityView extends GetView<MyActivityController> {
           ),
         ],
       ),
-      child: Center(
-        child: Text(
-          'my_activities'.tr,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: AppColors.brand(context),
-            letterSpacing: 0.5,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(width: 40.w), // Placeholder
+          Text(
+            'activity_history'.tr,
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              color: AppColors.brand(context),
+              letterSpacing: 0.5,
+            ),
           ),
-        ),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => controller.showSettings(context),
+              borderRadius: BorderRadius.circular(10.r),
+              child: Container(
+                padding: EdgeInsets.all(8.w),
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.border(context)),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                child: Icon(
+                  Icons.settings_outlined,
+                  color: AppColors.brand(context),
+                  size: 18.sp,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

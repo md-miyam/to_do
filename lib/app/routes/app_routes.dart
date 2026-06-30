@@ -7,6 +7,7 @@ abstract class Routes {
   static const SET_DAY = _Paths.SET_DAY;
   static const TO_DAY = _Paths.TO_DAY;
   static const MY_ACTIVITY = _Paths.MY_ACTIVITY;
+  static const FOCUS_SHIELD = _Paths.FOCUS_SHIELD;
 }
 
 abstract class _Paths {
@@ -15,4 +16,5 @@ abstract class _Paths {
   static const SET_DAY = '/set-day';
   static const TO_DAY = '/to-day';
   static const MY_ACTIVITY = '/my-activity';
+  static const FOCUS_SHIELD = '/focus-shield';
 }

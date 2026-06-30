@@ -1,0 +1,43 @@
+class AppKeys {
+  AppKeys._();
+
+  static const String appName = 'app_name';
+  static const String timeNeverStops = 'time_never_stops';
+  static const String doOrDie = 'do_or_die';
+  static const String hello = 'hello';
+  static const String addTask = 'add_task';
+  static const String settings = 'settings';
+  static const String changeLanguage = 'change_language';
+  static const String language = 'language';
+  static const String english = 'english';
+  static const String bengali = 'bengali';
+  static const String confirm = 'confirm';
+  static const String cancel = 'cancel';
+  static const String toDay = 'to_day';
+  static const String setDay = 'set_day';
+  static const String theme = 'theme';
+  static const String light = 'light';
+  static const String dark = 'dark';
+  static const String system = 'system';
+  static const String myActivities = 'my_activities';
+  static const String activityHistory = 'activity_history';
+  static const String focusShield = 'focus_shield';
+  static const String shieldStatus = 'shield_status';
+  static const String enabled = 'enabled';
+  static const String disabled = 'disabled';
+  static const String searchApps = 'search_apps';
+  static const String category = 'category';
+  static const String description = 'description';
+  static const String blockDistractionsDesc = 'block_distractions_desc';
+  static const String permissionRequiredDesc = 'permission_required_desc';
+  static const String grantPermission = 'grant_permission';
+  static const String blockedAppsCount = 'blocked_apps_count';
+  static const String dailyProgress = 'daily_progress';
+  static const String completed = 'completed';
+  static const String moreAnalyticsComingSoon = 'more_analytics_coming_soon';
+  static const String totalTasks = 'total_tasks';
+  static const String completedTasks = 'completed_tasks';
+  static const String deniedTasks = 'denied_tasks';
+  static const String pendingTasks = 'pending_tasks';
+  static const String tools = 'tools';
+}
