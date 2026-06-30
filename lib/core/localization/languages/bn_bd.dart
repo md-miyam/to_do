@@ -71,5 +71,6 @@ final Map<String, String> bnBd = {
   'pending': 'মুলতবি',
   'category': 'বিভাগ',
   'description': 'বিবরণ',
-  'app_name': 'ডে-ট্র্যাক',
+  'app_name': 'আপনার দিনটি সাজান',
+  'do_or_die': 'করো অথবা মরো',
 };

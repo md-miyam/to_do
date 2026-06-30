@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timezone/data/latest.dart' as tz;
 import 'app/routes/app_pages.dart';
 import 'core/const/app_theme.dart';
 import 'core/localization/app_translations.dart';
@@ -11,6 +12,9 @@ import 'core/service/theme_change/theme_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Timezone
+  tz.initializeTimeZones();
 
   // Initialize Hive
   final hiveService = Get.put(HiveService());

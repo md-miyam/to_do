@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:animated_analog_clock/animated_analog_clock.dart';
 import '../../../../core/const/app_colors.dart';
 import '../controllers/to_day_controller.dart';
 import '../widgets/timeline_task_card.dart';
@@ -70,34 +72,119 @@ class ToDayView extends GetView<ToDayController> {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + 8.h,
-        bottom: 12.h,
-        left: 15.w,
-        right: 15.w,
+        top: MediaQuery.of(context).padding.top + 10.h,
+        bottom: 16.h,
+        left: 16.w,
+        right: 16.w,
       ),
       decoration: BoxDecoration(
         color: AppColors.surface(context),
         borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(20.r),
+          bottom: Radius.circular(24.r),
         ),
         boxShadow: [
           BoxShadow(
             color: AppColors.shadow(context),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            'daily_progress'.tr,
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
+          // Left: Time/Clock
+          Row(
+            children: [
+              SizedBox(
+                width: 45.w,
+                height: 45.w,
+                child: AnimatedAnalogClock(
+                  location: 'Asia/Dhaka',
+                  hourHandColor: AppColors.brand(context),
+                  minuteHandColor: AppColors.brand(context),
+                  secondHandColor: AppColors.error,
+                  centerDotColor: AppColors.brand(context),
+                  backgroundColor: AppColors.background(context),
+                  dialType: DialType.none,
+                  size: 45.w,
+                ),
+              ),
+              SizedBox(width: 8.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    DateFormat('hh:mm').format(DateTime.now()),
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.text(context),
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                  Text(
+                    DateFormat('a').format(DateTime.now()),
+                    style: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.brand(context),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          
+          // Center/Title
+          Expanded(
+            child: Text(
+              'do_or_die'.tr,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w900,
+                color: AppColors.brand(context),
+                letterSpacing: 1.0,
+              ),
+            ),
+          ),
+
+          // Right: Date Block
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+            decoration: BoxDecoration(
               color: AppColors.brand(context),
-              letterSpacing: 0.5,
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.brand(context).withAlpha(60),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  DateFormat('dd').format(DateTime.now()),
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.isDark(context) ? Colors.black : Colors.white,
+                  ),
+                ),
+                Text(
+                  DateFormat('MMM').format(DateTime.now()).toUpperCase(),
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.isDark(context) ? Colors.black.withAlpha(180) : Colors.white.withAlpha(180),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

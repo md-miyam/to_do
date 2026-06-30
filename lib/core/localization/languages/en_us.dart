@@ -71,5 +71,6 @@ final Map<String, String> enUs = {
   'pending': 'Pending',
   'category': 'Category',
   'description': 'Description',
-  'app_name': 'DayTrack',
+  'app_name': 'MAKE YOUR DAY',
+  'do_or_die': 'DO OR DIE',
 };
