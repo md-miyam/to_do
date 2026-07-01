@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../core/const/app_colors.dart';
 import '../../../routes/app_pages.dart';
-import '../../focus_shield/views/focus_shield_view.dart';
 import '../../to_day/models/daily_progress_model.dart';
 import '../../to_day/widgets/daily_progress_heatmap.dart';
 import '../controllers/my_activity_controller.dart';
@@ -66,6 +65,10 @@ class MyActivityView extends GetView<MyActivityController> {
                   
                   // Placeholder for future activities/analytics
                   _buildEmptyStatePlaceholder(context),
+
+                  SizedBox(height: 40.h),
+                  _buildFooterInfo(context),
+                  SizedBox(height: 20.h),
                 ],
               ),
             ),
@@ -186,6 +189,57 @@ class MyActivityView extends GetView<MyActivityController> {
               fontSize: 14.sp,
               color: AppColors.subText(context).withAlpha(150),
               fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFooterInfo(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          Text(
+            'Created by',
+            style: TextStyle(
+              fontSize: 10.sp,
+              fontWeight: FontWeight.bold,
+              color: AppColors.subText(context).withAlpha(80),
+              letterSpacing: 1.2,
+            ),
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            'Md Miyam Hosen',
+            style: TextStyle(
+              fontSize: 15.sp,
+              fontWeight: FontWeight.bold,
+              color: AppColors.text(context).withAlpha(180),
+            ),
+          ),
+          Text(
+            'mdmiyam20@gmail.com',
+            style: TextStyle(
+              fontSize: 11.sp,
+              color: AppColors.subText(context).withAlpha(120),
+            ),
+          ),
+          SizedBox(height: 12.h),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
+            decoration: BoxDecoration(
+              color: AppColors.brand(context).withAlpha(15),
+              borderRadius: BorderRadius.circular(20.r),
+              border: Border.all(color: AppColors.brand(context).withAlpha(30)),
+            ),
+            child: Text(
+              'V 0.0.1',
+              style: TextStyle(
+                fontSize: 10.sp,
+                fontWeight: FontWeight.bold,
+                color: AppColors.brand(context),
+              ),
             ),
           ),
         ],
