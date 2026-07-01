@@ -32,7 +32,6 @@ dependencies:
   time: ^2.1.6
   animated_analog_clock: ^0.2.2
   timezone: ^0.10.1
-  app_blocker: ^2.1.0
   fl_chart: ^0.70.2
 
 dev_dependencies:

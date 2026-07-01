@@ -141,7 +141,7 @@ class NetworkConfig {
           );
           request.headers.addAll({
             'Accept': 'application/json',
-            if (token != null) 'Authorization': token,
+            'Authorization': ?token,
           });
 
           print("MULTIPART request URL: $url");
@@ -204,7 +204,7 @@ class NetworkConfig {
 
           request.headers.addAll({
             'Accept': 'application/json',
-            if (token != null) 'Authorization': token,
+            'Authorization': ?token,
             // If your backend expects Bearer:
             // 'Authorization': 'Bearer $token',
           });

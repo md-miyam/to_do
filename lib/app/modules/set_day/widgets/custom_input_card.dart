@@ -76,7 +76,7 @@ class CustomInputCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                if (trailingHeader != null) trailingHeader!,
+                ?trailingHeader,
               ],
             ),
           ),
